@@ -6,7 +6,6 @@ Create class BaseModel
 
 # if __name__ == '__main__':
 
-    # print("Starting Models")
 
 import uuid
 from datetime import datetime
@@ -15,14 +14,25 @@ class BaseModel:
     """
     class BaseModel
     """
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """
         Constructor method
         """
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
-
+        if len(kwargs) == 0:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
+        else:
+            for key, value in kwargs.items():
+                if key != '__class__':
+                    if key == 'created_at':
+                        datetime_obj = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
+                        setattr(self, key, datetime_obj)
+                    elif key == 'updated_at':
+                        datetime_obj = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
+                        setattr(self, key, datetime_obj)
+                    else:
+                        setattr(self, key, value)
     def __str__(self):
         """
         String representation
@@ -45,17 +55,3 @@ class BaseModel:
         my_dict['updated_at'] = self.updated_at.isoformat()
         my_dict['__class__'] = self.__class__.__name__
         return my_dict
-    
-
-    # my_model = BaseModel()
-    # my_model.name = "My First Model"
-    # my_model.my_number = 89
-    # print(my_model)
-    # my_model.save()
-    # print(my_model)
-    # my_model_json = my_model.to_dict()
-    # print(my_model_json)
-    # print("JSON of my_model:")
-    # for key in my_model_json.keys():
-    #     print("\t{}: ({}) - {}".format(key, type(my_model_json[key]), my_model_json[key]))
-
