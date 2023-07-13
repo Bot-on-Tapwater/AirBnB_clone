@@ -2,7 +2,13 @@
 # Command Intepreter
 import cmd
 from models import base_model
-import models
+from models import amenity
+from models import city
+from models import place
+from models import review
+from models import state
+from models import user
+import models 
 
 class HBNBCommand(cmd.Cmd):
     """
@@ -50,7 +56,7 @@ class HBNBCommand(cmd.Cmd):
         except IndexError:
             print("** instance id missing **")
             return
-        print(type(args))
+        # print(type(args))
         if class_name:
             if hasattr(base_model, class_name):
                 objs = models.storage.all()
