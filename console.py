@@ -154,7 +154,23 @@ class HBNBCommand(cmd.Cmd):
                     else:
                         attribute_name = args[2]
                         attribute_value = args[3]
-                        setattr(inst, attribute_name, attribute_value)
+                        if hasattr(inst, attribute_name):
+                            # Retrieve the current value
+                            current_value = getattr(inst, attribute_name)
+                            # Prompt the user for a new value
+                            new_value = attribute_value
+                            # Type cast the new value to match the existing attribute's type
+                            if isinstance(current_value, int):
+                                new_value = int(new_value)
+                            elif isinstance(current_value, float):
+                                new_value = float(new_value)
+                                # Add more type checks for other types if necessary
+                                # Update the attribute with the new value
+                            elif isinstance(current_value, str):
+                                new_value = str(new_value)
+                            setattr(inst, attribute_name, new_value)
+                        else:
+                            setattr(inst, attribute_name, attribute_value)
                         models.storage.save()
                         return
 
