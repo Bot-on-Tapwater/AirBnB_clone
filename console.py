@@ -39,28 +39,131 @@ class HBNBCommand(cmd.Cmd):
         """Prints str repr of instance"""
         args = line.split()
 
-        class_name = args[0]
-        inst_id = args[1]
-
         try:
-            if class_name:
-                if hasattr(base_model, class_name):
-                    # print(f"{class_name} class exists")
-                    if len(args) == 1:
-                        print("** instance id missing **")
-                    else:
-                        objs = models.storage.all()
-                        for inst_name_id, inst  in objs.items():
-                            cls_name_id = inst_name_id.split(".")
-                            if inst_id == cls_name_id[1] and class_name == cls_name_id[0]:
-                                print(inst)
-                                return
-                        print("** no instance found **")
-                else:
-                    print("** class doesn't exist **")
-        
+            class_name = args[0]
         except IndexError:
             print("** class name missing **")
+            return
+        try:
+            inst_id = args[1]
+
+        except IndexError:
+            print("** instance id missing **")
+            return
+        print(type(args))
+        if class_name:
+            if hasattr(base_model, class_name):
+                objs = models.storage.all()
+                for inst_name_id, inst  in objs.items():
+                    cls_name_id = inst_name_id.split(".")
+                    if inst_id == cls_name_id[1] and class_name == cls_name_id[0]:
+                        print(inst)
+                        return
+                print("** no instance found **")
+            else:
+                print("** class doesn't exist **")
+
+    def do_destroy(self, line):
+        """Deletes an instance based on the class name and id"""
+        args = line.split()
+        try:
+            class_name = args[0]
+        except IndexError:
+            print("** class name missing **")
+            return
+        try:
+            inst_id = args[1]
+        except IndexError:
+            print("** instance id missing **")
+            return
+        if class_name:
+            if hasattr(base_model, class_name):
+                objs = models.storage.all()
+                for inst_name_id, inst  in objs.items():
+                    cls_name_id = inst_name_id.split(".")
+                    if inst_id == cls_name_id[1] and class_name == cls_name_id[0]:
+                        del objs[inst_name_id]
+                        models.storage.save()
+                        return
+                print("** no instance found **")
+            else:
+                print("** class doesn't exist **")
+
+    def do_all(self, line):
+        """
+        Prints all string representation of all
+        instances based or not on the class name
+        """
+        list_objs =[]
+        if hasattr(base_model, line):
+            objs = models.storage.all()
+            for inst_name_id, inst  in objs.items():
+                cls_name_id = inst_name_id.split(".")
+                if line == cls_name_id[0]:
+                    list_objs.append(str(inst))
+            print(list_objs)
+        else:
+            print("** class doesn't exist **")
+    
+    def custom_split(self, line):
+        args = []
+        current_arg = ""
+        inside_quotes = False
+
+        for char in line:
+            if char == '"':
+                inside_quotes = not inside_quotes
+            elif char == ' ' and not inside_quotes:
+                if current_arg:
+                    args.append(current_arg)
+                    current_arg = ""
+                continue
+
+            current_arg += char
+
+        if current_arg:
+            args.append(current_arg)
+
+        return args
+
+
+    def do_update(self, line):
+        """
+        Updates an instance based on the class name
+        and id by adding or updating attribute
+        """
+        args = self.custom_split(line)
+        objs = models.storage.all()
+        
+        if len(args) == 0:
+            print("** class name missing **")
+            return
+        if hasattr(base_model, args[0]):
+            if len(args) == 1:
+                print("** instance id missing **")
+                return
+            for inst_name_id, inst  in objs.items():
+                cls_name_id = inst_name_id.split(".")
+                if args[0] == cls_name_id[0] and args[1] == cls_name_id[1]:
+                    if len(args) == 2:
+                        print("** attribute name missing **")
+                        return
+                    elif len(args) == 3:
+                        print("** value missing **")
+                        return
+                    else:
+                        attribute_name = args[2]
+                        attribute_value = args[3]
+                        setattr(inst, attribute_name, attribute_value)
+                        models.storage.save()
+                        return
+
+                else:
+                    print("** no instance found **")
+                    return
+        else:
+            print("** class doesn't exist **")
+            return
 
 
 if __name__ == '__main__':
