@@ -8,6 +8,7 @@ import uuid
 from datetime import datetime
 import models
 
+
 class BaseModel:
     """
     class BaseModel
@@ -32,7 +33,7 @@ class BaseModel:
                         setattr(self, key, datetime_obj)
                     else:
                         setattr(self, key, value)
-        
+
     def __str__(self):
         """
         String representation
@@ -45,7 +46,7 @@ class BaseModel:
         """
         self.updated_at = datetime.now()
         models.storage.save()
-    
+
     def to_dict(self):
         """
         returns dictionary of key values of instance

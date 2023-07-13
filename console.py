@@ -8,7 +8,8 @@ from models import place
 from models import review
 from models import state
 from models import user
-import models 
+import models
+
 
 class HBNBCommand(cmd.Cmd):
     """
@@ -40,7 +41,7 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
         else:
             print("** class name missing **")
-    
+
     def do_show(self, line):
         """Prints str repr of instance"""
         args = line.split()
@@ -60,7 +61,7 @@ class HBNBCommand(cmd.Cmd):
         if class_name:
             if hasattr(base_model, class_name):
                 objs = models.storage.all()
-                for inst_name_id, inst  in objs.items():
+                for inst_name_id, inst in objs.items():
                     cls_name_id = inst_name_id.split(".")
                     if inst_id == cls_name_id[1] and class_name == cls_name_id[0]:
                         print(inst)
@@ -85,7 +86,7 @@ class HBNBCommand(cmd.Cmd):
         if class_name:
             if hasattr(base_model, class_name):
                 objs = models.storage.all()
-                for inst_name_id, inst  in objs.items():
+                for inst_name_id, inst in objs.items():
                     cls_name_id = inst_name_id.split(".")
                     if inst_id == cls_name_id[1] and class_name == cls_name_id[0]:
                         del objs[inst_name_id]
@@ -100,17 +101,17 @@ class HBNBCommand(cmd.Cmd):
         Prints all string representation of all
         instances based or not on the class name
         """
-        list_objs =[]
+        list_objs = []
         if hasattr(base_model, line):
             objs = models.storage.all()
-            for inst_name_id, inst  in objs.items():
+            for inst_name_id, inst in objs.items():
                 cls_name_id = inst_name_id.split(".")
                 if line == cls_name_id[0]:
                     list_objs.append(str(inst))
             print(list_objs)
         else:
             print("** class doesn't exist **")
-    
+
     def custom_split(self, line):
         args = []
         current_arg = ""
@@ -132,7 +133,6 @@ class HBNBCommand(cmd.Cmd):
 
         return args
 
-
     def do_update(self, line):
         """
         Updates an instance based on the class name
@@ -140,7 +140,7 @@ class HBNBCommand(cmd.Cmd):
         """
         args = self.custom_split(line)
         objs = models.storage.all()
-        
+
         if len(args) == 0:
             print("** class name missing **")
             return
@@ -148,7 +148,7 @@ class HBNBCommand(cmd.Cmd):
             if len(args) == 1:
                 print("** instance id missing **")
                 return
-            for inst_name_id, inst  in objs.items():
+            for inst_name_id, inst in objs.items():
                 cls_name_id = inst_name_id.split(".")
                 if args[0] == cls_name_id[0] and args[1] == cls_name_id[1]:
                     if len(args) == 2:
@@ -165,13 +165,10 @@ class HBNBCommand(cmd.Cmd):
                             current_value = getattr(inst, attribute_name)
                             # Prompt the user for a new value
                             new_value = attribute_value
-                            # Type cast the new value to match the existing attribute's type
                             if isinstance(current_value, int):
                                 new_value = int(new_value)
                             elif isinstance(current_value, float):
                                 new_value = float(new_value)
-                                # Add more type checks for other types if necessary
-                                # Update the attribute with the new value
                             elif isinstance(current_value, str):
                                 new_value = str(new_value)
                             setattr(inst, attribute_name, new_value)

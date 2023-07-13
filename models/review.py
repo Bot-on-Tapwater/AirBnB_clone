@@ -6,6 +6,7 @@ Create class Review
 
 from models import base_model
 
+
 class Review(base_model.BaseModel):
     """
     class Review

@@ -6,6 +6,7 @@ Create class Place
 
 from models import base_model
 
+
 class Place(base_model.BaseModel):
     """
     class Place
