@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 # Command Intepreter
 import cmd
-from models import base_model
-from models import amenity
-from models import city
-from models import place
-from models import review
-from models import state
-from models import user
+from models.base_model import BaseModel
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
+from models.user import User
 import models
 
 
@@ -16,6 +16,7 @@ class HBNBCommand(cmd.Cmd):
     Create class HBNBCommand
     """
     prompt = "(hbnb)"  # Set your custom prompt here
+    classes = ['BaseModel', 'Amenity', 'City', 'Place', 'Review', 'State', 'User']
 
     def do_EOF(self, line):
         """Checks end of file"""
@@ -32,9 +33,9 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args):
         """Creates a new instance"""
         if args:
-            if hasattr(base_model, args):
+            if args in self.classes:
                 # class_obj = getattr(base_model, args)
-                dummy_instance = base_model.BaseModel()
+                dummy_instance = eval(args)()
                 dummy_instance.save()
                 print(dummy_instance.id)
             else:
@@ -43,58 +44,57 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
 
     def do_show(self, line):
-        """Prints str repr of instance"""
+        """Prints string representation of an instance"""
         args = line.split()
 
-        try:
-            class_name = args[0]
-        except IndexError:
+        if not args:
             print("** class name missing **")
             return
-        try:
-            inst_id = args[1]
 
-        except IndexError:
+        class_name = args[0]
+
+        if class_name not in self.classes:
+            print("** class doesn't exist **")
+            return
+
+        if len(args) < 2:
             print("** instance id missing **")
             return
-        # print(type(args))
-        if class_name:
-            if hasattr(base_model, class_name):
-                objs = models.storage.all()
-                for inst_name_id, inst in objs.items():
-                    cls_name_id = inst_name_id.split(".")
-                    if inst_id == cls_name_id[1] and class_name == cls_name_id[0]:
-                        print(inst)
-                        return
-                print("** no instance found **")
-            else:
-                print("** class doesn't exist **")
+
+        instance_id = args[1]
+        key = class_name + "." + instance_id
+
+        if key in models.storage.all():
+            print(models.storage.all()[key])
+        else:
+            print("** no instance found **")
 
     def do_destroy(self, line):
         """Deletes an instance based on the class name and id"""
         args = line.split()
-        try:
-            class_name = args[0]
-        except IndexError:
+
+        if not args:
             print("** class name missing **")
             return
-        try:
-            inst_id = args[1]
-        except IndexError:
+
+        class_name = args[0]
+
+        if class_name not in self.classes:
+            print("** class doesn't exist **")
+            return
+
+        if len(args) < 2:
             print("** instance id missing **")
             return
-        if class_name:
-            if hasattr(base_model, class_name):
-                objs = models.storage.all()
-                for inst_name_id, inst in objs.items():
-                    cls_name_id = inst_name_id.split(".")
-                    if inst_id == cls_name_id[1] and class_name == cls_name_id[0]:
-                        del objs[inst_name_id]
-                        models.storage.save()
-                        return
-                print("** no instance found **")
-            else:
-                print("** class doesn't exist **")
+
+        instance_id = args[1]
+        key = class_name + "." + instance_id
+
+        if key in models.storage.all():
+            del models.storage.all()[key]
+            models.storage.save()
+        else:
+            print("** no instance found **")
 
     def do_all(self, line):
         """
@@ -102,7 +102,7 @@ class HBNBCommand(cmd.Cmd):
         instances based or not on the class name
         """
         list_objs = []
-        if hasattr(base_model, line):
+        if line in self.classes:
             objs = models.storage.all()
             for inst_name_id, inst in objs.items():
                 cls_name_id = inst_name_id.split(".")
@@ -139,50 +139,47 @@ class HBNBCommand(cmd.Cmd):
         and id by adding or updating attribute
         """
         args = self.custom_split(line)
-        objs = models.storage.all()
 
-        if len(args) == 0:
+        if not args:
             print("** class name missing **")
             return
-        if hasattr(base_model, args[0]):
-            if len(args) == 1:
-                print("** instance id missing **")
-                return
-            for inst_name_id, inst in objs.items():
-                cls_name_id = inst_name_id.split(".")
-                if args[0] == cls_name_id[0] and args[1] == cls_name_id[1]:
-                    if len(args) == 2:
-                        print("** attribute name missing **")
-                        return
-                    elif len(args) == 3:
-                        print("** value missing **")
-                        return
-                    else:
-                        attribute_name = args[2]
-                        attribute_value = args[3]
-                        if hasattr(inst, attribute_name):
-                            # Retrieve the current value
-                            current_value = getattr(inst, attribute_name)
-                            # Prompt the user for a new value
-                            new_value = attribute_value
-                            if isinstance(current_value, int):
-                                new_value = int(new_value)
-                            elif isinstance(current_value, float):
-                                new_value = float(new_value)
-                            elif isinstance(current_value, str):
-                                new_value = str(new_value)
-                            setattr(inst, attribute_name, new_value)
-                        else:
-                            setattr(inst, attribute_name, attribute_value)
-                        models.storage.save()
-                        return
 
-                else:
-                    print("** no instance found **")
-                    return
-        else:
+        class_name = args[0]
+
+        if class_name not in self.classes:
             print("** class doesn't exist **")
             return
+
+        if len(args) < 2:
+            print("** instance id missing **")
+            return
+
+        instance_id = args[1]
+        key = class_name + "." + instance_id
+
+        if key not in models.storage.all():
+            print("** no instance found **")
+            return
+
+        if len(args) < 3:
+            print("** attribute name missing **")
+            return
+
+        if len(args) < 4:
+            print("** value missing **")
+            return
+
+        attribute_name = args[2]
+        attribute_value = args[3]
+        instance = models.storage.all()[key]
+
+        try:
+            attribute_value = eval(attribute_value)
+        except (NameError, SyntaxError):
+            pass
+
+        setattr(instance, attribute_name, attribute_value)
+        models.storage.save()
 
 
 if __name__ == '__main__':
