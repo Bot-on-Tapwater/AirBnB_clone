@@ -3,6 +3,7 @@
 """
 Create class FileStorage
 """
+import json
 from models.base_model import BaseModel
 from models.user import User
 from models.amenity import Amenity
@@ -24,27 +25,27 @@ class FileStorage:
         """
         returns the dictionary __objects
         """
-        return self.__objects
+        return FileStorage.__objects
 
     def new(self, obj):
         """
         sets in __objects the obj
         """
         class_name = obj.__class__.__name__
-        self.__objects[f"{class_name}.{obj.id}"] = obj
+        FileStorage.__objects[f"{class_name}.{obj.id}"] = obj
         # print(f"\n\t{self.__objects}\t")
 
     def save(self):
         """
         serializes __objects to the JSON file
         """
-        non_ser_dict = self.__objects
+        non_ser_dict = FileStorage.__objects
         ser_dict = {}
 
         for obj_id in non_ser_dict.keys():
             ser_dict[obj_id] = non_ser_dict[obj_id].to_dict()
 
-        with open(self.__file_path, "w") as json_file:
+        with open(FileStorage.__file_path, "w") as json_file:
             json.dump(ser_dict, json_file)
 
     def reload(self):
@@ -52,7 +53,7 @@ class FileStorage:
         deserializes the JSON file to __objects
         """
         try:
-            with open(self.__file_path) as json_file:
+            with open(FileStorage.__file_path) as json_file:
                 ser_dict = json.load(json_file)
                 for values in ser_dict.values():
                     cls_name = values["__class__"]
