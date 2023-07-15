@@ -1,7 +1,13 @@
+#!/usr/bin/python3
+
+"""
+Unittests for command intepreter
+"""
 import unittest
 from io import StringIO
 from unittest.mock import patch
 from console import HBNBCommand
+
 
 class TestHBNBCommand(unittest.TestCase):
     def setUp(self):
@@ -349,6 +355,7 @@ class TestHBNBCommand(unittest.TestCase):
                 self.cmd.onecmd(f'update {class_name} 121212')
                 output = fake_out.getvalue().strip()
                 self.assertEqual(output, '** no instance found **')
+
 
 if __name__ == '__main__':
     unittest.main()
