@@ -20,17 +20,14 @@ class BaseModel:
             models.storage.new(self)
         else:
             for key, value in kwargs.items():
-                if key != '__class__':
-                    if key == 'created_at':
-                        datetime_obj = datetime.strptime(
-                                value, "%Y-%m-%dT%H:%M:%S.%f")
-                        setattr(self, key, datetime_obj)
-                    elif key == 'updated_at':
-                        datetime_obj = datetime.strptime(
-                                value, "%Y-%m-%dT%H:%M:%S.%f")
-                        setattr(self, key, datetime_obj)
-                    else:
-                        setattr(self, key, value)
+                if key == '__class__':
+                    continue
+                elif key == 'created_at' or key == "updated_at":
+                    datetime_obj = datetime.strptime(
+                            value, "%Y-%m-%dT%H:%M:%S.%f")
+                    setattr(self, key, datetime_obj)
+                else:
+                    setattr(self, key, value)
 
     def __str__(self):
         """String representation"""
