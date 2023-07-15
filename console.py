@@ -18,6 +18,10 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb)"  # Set your custom prompt here
     classes = ['BaseModel', 'Amenity', 'City', 'Place', 'Review', 'State', 'User']
 
+    def emptyline(self):
+        """Do nothing if empty line is passed"""
+        pass
+
     def do_EOF(self, line):
         """Checks end of file"""
         return True
@@ -25,10 +29,6 @@ class HBNBCommand(cmd.Cmd):
     def do_quit(self, arg):
         """Quit command to exit the program"""
         return True
-
-    def emptyline(self):
-        """Do nothing if empty line is passed"""
-        pass
 
     def do_create(self, args):
         """Creates a new instance"""
