@@ -2,7 +2,7 @@
 
 """Create class BaseModel"""
 
-import uuid
+from uuid import uuid4
 from datetime import datetime
 import models
 
@@ -14,7 +14,7 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         """Constructor method"""
         if len(kwargs) == 0:
-            self.id = str(uuid.uuid4())
+            self.id = str(uuid4())
             self.created_at = datetime.now()
             self.updated_at = self.created_at
             models.storage.new(self)
@@ -23,9 +23,8 @@ class BaseModel:
                 if key == '__class__':
                     continue
                 elif key == 'created_at' or key == "updated_at":
-                    datetime_obj = datetime.strptime(
-                            value, "%Y-%m-%dT%H:%M:%S.%f")
-                    setattr(self, key, datetime_obj)
+                    setattr(self, key, datetime.fromisoformat(value))
+
                 else:
                     setattr(self, key, value)
 
