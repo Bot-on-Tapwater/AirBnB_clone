@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Console for AirBNB clone"""
+"""Console intepreter for AirBNB clone"""
 import cmd
 from models.base_model import BaseModel
 from models.amenity import Amenity
@@ -16,7 +16,8 @@ class HBNBCommand(cmd.Cmd):
     Create class HBNBCommand
     """
     prompt = "(hbnb)"  # Set your custom prompt here
-    classes = ['BaseModel', 'Amenity', 'City', 'Place', 'Review', 'State', 'User']
+    classes = [
+            'BaseModel', 'Amenity', 'City', 'Place', 'Review', 'State', 'User']
 
     def do_EOF(self, line):
         """Checks end of file"""
