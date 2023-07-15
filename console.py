@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Command Intepreter
+"""Command Interpreter for AirBNB clone"""
 import cmd
 from models.base_model import BaseModel
 from models.amenity import Amenity
