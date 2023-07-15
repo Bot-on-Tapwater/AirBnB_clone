@@ -31,7 +31,7 @@ class BaseModel:
     def __str__(self):
         """String representation"""
         class_name = self.__class__.__name__
-        return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
+        return "[{}] ({}) {}".format(class_name, self.id, self.__dict__)
 
     def save(self):
         """Updates attr updated_at with current time"""
