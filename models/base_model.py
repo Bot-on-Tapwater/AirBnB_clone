@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 
-"""
-Create class BaseModel
-"""
+"""Create class BaseModel"""
 
 import uuid
 from datetime import datetime
@@ -14,9 +12,7 @@ class BaseModel:
     class BaseModel
     """
     def __init__(self, *args, **kwargs):
-        """
-        Constructor method
-        """
+        """Constructor method"""
         if len(kwargs) == 0:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
@@ -35,22 +31,16 @@ class BaseModel:
                         setattr(self, key, value)
 
     def __str__(self):
-        """
-        String representation
-        """
+        """String representation"""
         return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
 
     def save(self):
-        """
-        Updates attr updated_at with current time
-        """
+        """Updates attr updated_at with current time"""
         self.updated_at = datetime.now()
         models.storage.save()
 
     def to_dict(self):
-        """
-        returns dictionary of key values of instance
-        """
+        """returns dictionary of key values of instance"""
         my_dict = self.__dict__.copy()
         # my_dict['id'] = self.id
         my_dict['created_at'] = self.created_at.isoformat()
