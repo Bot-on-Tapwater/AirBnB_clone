@@ -4,10 +4,10 @@
 Create class Review
 """
 
-from models import base_model
+from models.base_model import BaseModel
 
 
-class Review(base_model.BaseModel):
+class Review(BaseModel):
     """
     class Review
     """

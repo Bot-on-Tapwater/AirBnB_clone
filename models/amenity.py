@@ -4,10 +4,10 @@
 Create class Amenity
 """
 
-from models import base_model
+from models.base_model import BaseModel
 
 
-class Amenity(base_model.BaseModel):
+class Amenity(BaseModel):
     """
     class Amenity
     """

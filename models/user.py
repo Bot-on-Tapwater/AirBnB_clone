@@ -4,10 +4,10 @@
 Create class User
 """
 
-from models import base_model
+from models.base_model import BaseModel
 
 
-class User(base_model.BaseModel):
+class User(BaseModel):
     """
     class User
     """

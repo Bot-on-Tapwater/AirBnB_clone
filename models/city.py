@@ -4,10 +4,10 @@
 Create class City
 """
 
-from models import base_model
+from models.base_model import BaseModel
 
 
-class City(base_model.BaseModel):
+class City(BaseModel):
     """
     class City
     """
