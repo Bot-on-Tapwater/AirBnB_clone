@@ -13,11 +13,12 @@ class BaseModel:
     """
     def __init__(self, *args, **kwargs):
         """Constructor method"""
+        from models import storage
         if len(kwargs) == 0:
             self.id = str(uuid4())
             self.created_at = datetime.now()
             self.updated_at = self.created_at
-            models.storage.new(self)
+            storage.new(self)
         else:
             for key, value in kwargs.items():
                 if key == '__class__':
@@ -35,8 +36,9 @@ class BaseModel:
 
     def save(self):
         """Updates attr updated_at with current time"""
+        from models import storage
         self.updated_at = datetime.now()
-        models.storage.save()
+        storage.save()
 
     def to_dict(self):
         """returns dictionary of key values of instance"""
