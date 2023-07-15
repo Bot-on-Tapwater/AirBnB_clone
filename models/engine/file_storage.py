@@ -1,8 +1,5 @@
 #!/usr/bin/python3
-
-"""
-Create class FileStorage
-"""
+"""Defines the FileStorage class."""
 import json
 from models.base_model import BaseModel
 from models.user import User
@@ -13,32 +10,27 @@ from models.review import Review
 from models.state import State
 
 
-
 class FileStorage:
-    """
-    Class FileStorage
+    """Represent an abstracted storage engine.
+
+    Attributes:
+        __file_path (str): The name of the file to save objects to.
+        __objects (dict): A dictionary of instantiated objects.
     """
     __file_path = "file.json"
     __objects = {}
 
     def all(self):
-        """
-        returns the dictionary __objects
-        """
+        """Return the dictionary __objects."""
         return FileStorage.__objects
 
     def new(self, obj):
-        """
-        sets in __objects the obj
-        """
+        """Set in __objects obj with key <obj_class_name>.id"""
         class_name = obj.__class__.__name__
         FileStorage.__objects[f"{class_name}.{obj.id}"] = obj
-        # print(f"\n\t{self.__objects}\t")
 
     def save(self):
-        """
-        serializes __objects to the JSON file
-        """
+        """Serialize __objects to the JSON file __file_path."""
         non_ser_dict = FileStorage.__objects
         ser_dict = {}
 
@@ -49,9 +41,7 @@ class FileStorage:
             json.dump(ser_dict, json_file)
 
     def reload(self):
-        """
-        deserializes the JSON file to __objects
-        """
+        """Deserialize the JSON file __file_path to __objects, if it exists."""
         try:
             with open(FileStorage.__file_path) as json_file:
                 ser_dict = json.load(json_file)
@@ -59,8 +49,6 @@ class FileStorage:
                     cls_name = values["__class__"]
                     del values["__class__"]
                     self.new(eval(cls_name)(**values))
-
-                    # BaseModel(**kwargs)
 
         except FileNotFoundError:
             return
