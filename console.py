@@ -96,12 +96,10 @@ class HBNBCommand(cmd.Cmd):
             models.storage.save()
         else:
             print("** no instance found **")
-
+    """
     def do_all(self, line):
-        """
         Prints all string representation of all
         instances based or not on the class name
-        """
         list_objs = []
         if line in self.classes:
             objs = models.storage.all()
@@ -110,6 +108,36 @@ class HBNBCommand(cmd.Cmd):
                 if line == cls_name_id[0]:
                     list_objs.append(str(inst))
             print(list_objs)
+        else:
+            print("** class doesn't exist **")
+    """
+    def do_all(self, line):
+        """
+        Prints all string representation of all
+        instances based or not on the class name
+        """
+        if line in self.classes:
+            objects = models.storage.all()
+            class_instances = [
+                str(instance) for instance in objects.values()
+                if type(instance).__name__ == line]
+            print(class_instances)
+        elif not line:
+            objects = models.storage.all()
+            all_instances = [str(instance) for instance in objects.values()]
+            print(all_instances)
+        else:
+            print("** class doesn't exist **")
+
+    def do_count(self, line):
+        """Counts the number of instances of a class"""
+        if line in self.classes:
+            objects = models.storage.all()
+            class_instances = [
+                instance for instance in objects.values()
+                if type(instance).__name__ == line]
+            count = len(class_instances)
+            print(count)
         else:
             print("** class doesn't exist **")
 
@@ -185,6 +213,17 @@ class HBNBCommand(cmd.Cmd):
 
         setattr(instance, attribute_name, attribute_value)
         models.storage.save()
+
+    def default(self, line):
+        """Default command handler method"""
+        if line.endswith(".all()"):
+            class_name = line[:-6]
+            self.do_all(class_name)
+        elif line.endswith(".count()"):
+            class_name = line[:-8]
+            self.do_count(class_name)
+        else:
+            print("*** Unknown syntax: {}".format(line))
 
 
 if __name__ == '__main__':
