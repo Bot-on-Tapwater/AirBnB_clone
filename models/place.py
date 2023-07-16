@@ -11,7 +11,7 @@ class Place(BaseModel):
     """
     class Place
     """
-    city_id = "Place_hol"
+    city_id = ""
     user_id = ""
     name = ""
     description = ""
