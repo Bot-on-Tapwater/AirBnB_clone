@@ -1,6 +1,7 @@
 import unittest
 from models.place import Place
 
+
 class TestPlace(unittest.TestCase):
     def setUp(self):
         self.place = Place()
@@ -42,6 +43,7 @@ class TestPlace(unittest.TestCase):
         self.place.save()
         new_updated_at = self.place.updated_at
         self.assertNotEqual(old_updated_at, new_updated_at)
+
 
 if __name__ == "__main__":
     unittest.main()

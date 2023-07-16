@@ -1,6 +1,7 @@
 import unittest
 from models.review import Review
 
+
 class TestReview(unittest.TestCase):
     def setUp(self):
         self.review = Review()
@@ -34,6 +35,7 @@ class TestReview(unittest.TestCase):
         self.review.save()
         new_updated_at = self.review.updated_at
         self.assertNotEqual(old_updated_at, new_updated_at)
+
 
 if __name__ == "__main__":
     unittest.main()

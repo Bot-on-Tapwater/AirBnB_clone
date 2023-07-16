@@ -1,6 +1,7 @@
 import unittest
 from models.state import State
 
+
 class TestState(unittest.TestCase):
     def setUp(self):
         self.state = State()
@@ -32,6 +33,7 @@ class TestState(unittest.TestCase):
         self.state.save()
         new_updated_at = self.state.updated_at
         self.assertNotEqual(old_updated_at, new_updated_at)
+
 
 if __name__ == "__main__":
     unittest.main()

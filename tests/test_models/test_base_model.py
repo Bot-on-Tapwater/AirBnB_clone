@@ -3,6 +3,7 @@
 import unittest
 from models.base_model import BaseModel
 
+
 class TestBaseModel(unittest.TestCase):
     def test_new_instance(self):
         # Arrange
@@ -13,7 +14,7 @@ class TestBaseModel(unittest.TestCase):
 
         # Assert
         self.assertIsInstance(result, BaseModel)
-    
+
     def test_attributes_initialization(self):
         # Arrange
         my_model = BaseModel()
@@ -62,6 +63,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertIn('__class__', result_dict)
         self.assertIn('created_at', result_dict)
         self.assertIn('updated_at', result_dict)
+
 
 if __name__ == '__main__':
     unittest.main()

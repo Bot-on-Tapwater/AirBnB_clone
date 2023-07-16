@@ -1,6 +1,7 @@
 import unittest
 from models.amenity import Amenity
 
+
 class TestAmenity(unittest.TestCase):
     def setUp(self):
         self.amenity = Amenity()
@@ -32,6 +33,7 @@ class TestAmenity(unittest.TestCase):
         self.amenity.save()
         new_updated_at = self.amenity.updated_at
         self.assertNotEqual(old_updated_at, new_updated_at)
+
 
 if __name__ == "__main__":
     unittest.main()

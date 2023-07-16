@@ -42,8 +42,8 @@ class TestUserClass(unittest.TestCase):
     def test_str_method(self):
         """Test the __str__ method of User"""
         user_str = str(self.user)
-        expected_str = "[User] ({}) {}".format(self.user.id, self.user.__dict__)
-        self.assertEqual(user_str, expected_str)
+        expec_str = "[User] ({}) {}".format(self.user.id, self.user.__dict__)
+        self.assertEqual(user_str, expec_str)
 
 
 if __name__ == '__main__':

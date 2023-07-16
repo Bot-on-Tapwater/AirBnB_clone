@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 """
-Unittests for command intepreter
+Unittests for command interpreter
 """
 import unittest
 from io import StringIO
@@ -40,18 +40,13 @@ class TestHBNBCommand(unittest.TestCase):
             output = fake_out.getvalue().strip()
             self.assertEqual(output, '')
 
-    # def test_quit_command_mixed_case_whitespace(self):
-    #     with patch('sys.stdout', new=StringIO()) as fake_out:
-    #         self.assertFalse(self.cmd.onecmd('  qUit   some_argument  '))
-    #         output = fake_out.getvalue().strip()
-    #         self.assertEqual(output, '', "Expected empty output after mixed case quit command with whitespace.")
-
     def test_quit_command_invalid_argument(self):
         with patch('sys.stdout', new=StringIO()) as fake_out:
             self.assertFalse(self.cmd.onecmd('quit123'))
             output = fake_out.getvalue().strip()
-            self.assertIsNotNone(output, "Expected non-empty output for an invalid command.")
-    
+            self.assertIsNotNone(
+                output, "Expected non-empty output for an invalid command.")
+
     def test_EOF_command_success(self):
         with patch('sys.stdout', new=StringIO()) as fake_out:
             self.assertTrue(self.cmd.onecmd('EOF'))
@@ -78,7 +73,7 @@ class TestHBNBCommand(unittest.TestCase):
 
     # def test_EOF_command_mixed_case_whitespace(self):
     #     with patch('sys.stdout', new=StringIO()) as fake_out:
-    #         self.assertFalse(self.cmd.onecmd('  eOF   some_argument  '))
+    #         self.assertFalse(self.cmd.onecmd(' \n EOf   \n\n\n'))
     #         output = fake_out.getvalue().strip()
     #         self.assertEqual(output, '')
 
@@ -166,8 +161,10 @@ class TestHBNBCommand(unittest.TestCase):
             self.cmd.onecmd('quit')
             output_after = fake_out.getvalue().strip()
             self.assertEqual(output_after, output_before)
+
     def test_create_command_success(self):
-        classes = ['BaseModel', 'Amenity', 'City', 'Place', 'Review', 'State', 'User']
+        classes = [
+            'BaseModel', 'Amenity', 'City', 'Place', 'Review', 'State', 'User']
         for class_name in classes:
             with patch('sys.stdout', new=StringIO()) as fake_out:
                 self.cmd.onecmd(f'create {class_name}')
@@ -187,7 +184,8 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertEqual(output, '** class doesn\'t exist **')
 
     def test_show_command_success(self):
-        classes = ['BaseModel', 'Amenity', 'City', 'Place', 'Review', 'State', 'User']
+        classes = [
+            'BaseModel', 'Amenity', 'City', 'Place', 'Review', 'State', 'User']
         for class_name in classes:
             with patch('sys.stdout', new=StringIO()) as fake_out:
                 self.cmd.onecmd(f'show {class_name} existing-id')
@@ -207,7 +205,8 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertEqual(output, '** class doesn\'t exist **')
 
     def test_show_command_missing_instance_id(self):
-        classes = ['BaseModel', 'Amenity', 'City', 'Place', 'Review', 'State', 'User']
+        classes = [
+            'BaseModel', 'Amenity', 'City', 'Place', 'Review', 'State', 'User']
         for class_name in classes:
             with patch('sys.stdout', new=StringIO()) as fake_out:
                 self.cmd.onecmd(f'show {class_name}')
@@ -215,7 +214,9 @@ class TestHBNBCommand(unittest.TestCase):
                 self.assertEqual(output, '** instance id missing **')
 
     def test_destroy_command_success(self):
-        classes = ['BaseModel', 'Amenity', 'City', 'Place', 'Review', 'State', 'User']
+        classes = [
+            'BaseModel', 'Amenity',
+            'City', 'Place', 'Review', 'State', 'User']
         for class_name in classes:
             with patch('sys.stdout', new=StringIO()) as fake_out:
                 self.cmd.onecmd(f'destroy {class_name} existing-id')
@@ -235,7 +236,9 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertEqual(output, '** class doesn\'t exist **')
 
     def test_destroy_command_missing_instance_id(self):
-        classes = ['BaseModel', 'Amenity', 'City', 'Place', 'Review', 'State', 'User']
+        classes = [
+            'BaseModel', 'Amenity', 'City',
+            'Place', 'Review', 'State', 'User']
         for class_name in classes:
             with patch('sys.stdout', new=StringIO()) as fake_out:
                 self.cmd.onecmd(f'destroy {class_name}')
@@ -243,7 +246,9 @@ class TestHBNBCommand(unittest.TestCase):
                 self.assertEqual(output, '** instance id missing **')
 
     def test_all_command_success(self):
-        classes = ['BaseModel', 'Amenity', 'City', 'Place', 'Review', 'State', 'User']
+        classes = [
+            'BaseModel', 'Amenity', 'City',
+            'Place', 'Review', 'State', 'User']
         for class_name in classes:
             with patch('sys.stdout', new=StringIO()) as fake_out:
                 self.cmd.onecmd(f'all {class_name}')
@@ -255,9 +260,11 @@ class TestHBNBCommand(unittest.TestCase):
             self.cmd.onecmd('all InvalidClass')
             output = fake_out.getvalue().strip()
             self.assertEqual(output, '** class doesn\'t exist **')
-    
+
     def test_update_command_success(self):
-        classes = ['BaseModel', 'Amenity', 'City', 'Place', 'Review', 'State', 'User']
+        classes = [
+            'BaseModel', 'Amenity', 'City',
+            'Place', 'Review', 'State', 'User']
         for class_name in classes:
             with patch('sys.stdout', new=StringIO()) as fake_out:
                 # Create an instance of the class and capture the instance ID
@@ -267,7 +274,9 @@ class TestHBNBCommand(unittest.TestCase):
 
                 # Test the update command with attribute name and value
                 with patch('sys.stdout', new=StringIO()) as fake_out:
-                    self.cmd.onecmd(f'update {class_name} {instance_id} attribute_name "attribute_value"')
+                    self.cmd.onecmd(
+                         f'update {class_name} {instance_id}\
+                             attribute_name "attribute_value"')
                     output = fake_out.getvalue().strip()
                     self.assertEqual(output, '')
 
@@ -284,14 +293,19 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertEqual(output, '** class doesn\'t exist **')
 
     def test_update_command_missing_instance_id(self):
-        classes = ['BaseModel', 'Amenity', 'City', 'Place', 'Review', 'State', 'User']
+        classes = [
+            'BaseModel', 'Amenity', 'City',
+            'Place', 'Review', 'State', 'User']
         for class_name in classes:
             with patch('sys.stdout', new=StringIO()) as fake_out:
                 self.cmd.onecmd(f'update {class_name}')
                 output = fake_out.getvalue().strip()
                 self.assertEqual(output, '** instance id missing **')
+
     def test_update_command_missing_attribute_name(self):
-        classes = ['BaseModel', 'Amenity', 'City', 'Place', 'Review', 'State', 'User']
+        classes = [
+            'BaseModel', 'Amenity', 'City',
+            'Place', 'Review', 'State', 'User']
         for class_name in classes:
             with patch('sys.stdout', new=StringIO()) as fake_out:
                 # Create an instance of the class and capture the instance ID
@@ -304,9 +318,11 @@ class TestHBNBCommand(unittest.TestCase):
                     self.cmd.onecmd(f'update {class_name} {instance_id}')
                     output = fake_out.getvalue().strip()
                     self.assertEqual(output, '** attribute name missing **')
-    
+
     def test_update_command_missing_value(self):
-        classes = ['BaseModel', 'Amenity', 'City', 'Place', 'Review', 'State', 'User']
+        classes = [
+            'BaseModel', 'Amenity', 'City',
+            'Place', 'Review', 'State', 'User']
         for class_name in classes:
             with patch('sys.stdout', new=StringIO()) as fake_out:
                 # Create an instance of the class and capture the instance ID
@@ -316,7 +332,8 @@ class TestHBNBCommand(unittest.TestCase):
 
                 # Test the update command without value
                 with patch('sys.stdout', new=StringIO()) as fake_out:
-                    self.cmd.onecmd(f'update {class_name} {instance_id} attribute_name')
+                    self.cmd.onecmd(
+                        f'update {class_name} {instance_id} attribute_name')
                     output = fake_out.getvalue().strip()
                     self.assertEqual(output, '** value missing **')
 
@@ -327,7 +344,9 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertEqual(output, '** class doesn\'t exist **')
 
     def test_show_command_no_instance_found(self):
-        classes = ['BaseModel', 'Amenity', 'City', 'Place', 'Review', 'State', 'User']
+        classes = [
+            'BaseModel', 'Amenity', 'City',
+            'Place', 'Review', 'State', 'User']
         for class_name in classes:
             with patch('sys.stdout', new=StringIO()) as fake_out:
                 self.cmd.onecmd(f'show {class_name} 121212')
@@ -335,7 +354,9 @@ class TestHBNBCommand(unittest.TestCase):
                 self.assertEqual(output, '** no instance found **')
 
     def test_destroy_command_no_instance_found(self):
-        classes = ['BaseModel', 'Amenity', 'City', 'Place', 'Review', 'State', 'User']
+        classes = [
+            'BaseModel', 'Amenity', 'City',
+            'Place', 'Review', 'State', 'User']
         for class_name in classes:
             with patch('sys.stdout', new=StringIO()) as fake_out:
                 self.cmd.onecmd(f'destroy {class_name} 121212')
@@ -349,7 +370,9 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertEqual(output, '** class doesn\'t exist **')
 
     def test_update_command_no_instance_found(self):
-        classes = ['BaseModel', 'Amenity', 'City', 'Place', 'Review', 'State', 'User']
+        classes = [
+            'BaseModel', 'Amenity', 'City', 'Place',
+            'Review', 'State', 'User']
         for class_name in classes:
             with patch('sys.stdout', new=StringIO()) as fake_out:
                 self.cmd.onecmd(f'update {class_name} 121212')
