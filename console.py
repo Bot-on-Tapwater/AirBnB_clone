@@ -114,6 +114,10 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
 
     def custom_split(self, line):
+        """
+        Helper function for update
+        splits classname and id
+        """
         args = []
         current_arg = ""
         inside_quotes = False
