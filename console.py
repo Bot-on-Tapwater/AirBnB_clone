@@ -232,6 +232,16 @@ class HBNBCommand(cmd.Cmd):
                     line = "{} {}".format(class_name, instance_id)
                     self.do_show(line)
                     return
+        elif ".destroy" in line:
+            for class_name in self.classes:
+                if line.startswith(
+                        f"{class_name}.destroy(") and line.endswith(")"):
+                    start_index = line.find("(")
+                    end_index = line.find(")")
+                    instance_id = line[start_index + 2: end_index - 1]
+                    line = "{} {}".format(class_name, instance_id)
+                    self.do_destroy(line)
+                    return
         else:
             print("*** Unknown syntax: {}".format(line))
 
