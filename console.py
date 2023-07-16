@@ -222,6 +222,16 @@ class HBNBCommand(cmd.Cmd):
         elif line.endswith(".count()"):
             class_name = line[:-8]
             self.do_count(class_name)
+        elif ".show" in line:
+            for class_name in self.classes:
+                if line.startswith(
+                        f"{class_name}.show(") and line.endswith(")"):
+                    start_index = line.find("(")
+                    end_index = line.find(")")
+                    instance_id = line[start_index + 2: end_index - 1]
+                    line = "{} {}".format(class_name, instance_id)
+                    self.do_show(line)
+                    return
         else:
             print("*** Unknown syntax: {}".format(line))
 
