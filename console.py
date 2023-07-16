@@ -242,6 +242,23 @@ class HBNBCommand(cmd.Cmd):
                     line = "{} {}".format(class_name, instance_id)
                     self.do_destroy(line)
                     return
+        elif ".update" in line:
+            for class_name in self.classes:
+                if line.startswith(
+                        f"{class_name}.update(") and line.endswith(")"):
+                    start_index = line.find("(")
+                    end_index = line.find(")")
+                    params = line[start_index + 1: end_index].split(", ")
+                    if len(params) >= 3:
+                        inst_id = params[0][1:-1]
+                        attr_name = params[1][1:-1]
+                        attr_val = params[2][1:-1]
+                        line = f"{class_name} {inst_id} {attr_name} {attr_val}"
+                        self.do_update(line)
+                        return
+                    else:
+                        print("*** Missing parameters for update ***")
+                        return
         else:
             print("*** Unknown syntax: {}".format(line))
 
