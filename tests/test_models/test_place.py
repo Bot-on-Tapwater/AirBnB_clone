@@ -9,7 +9,7 @@ class TestPlace(unittest.TestCase):
         self.place = None
 
     def test_attributes_initialization(self):
-        self.assertEqual(self.place.city_id, "Place_hol")
+        self.assertEqual(self.place.city_id, "")
         self.assertEqual(self.place.user_id, "")
         self.assertEqual(self.place.name, "")
         self.assertEqual(self.place.description, "")
