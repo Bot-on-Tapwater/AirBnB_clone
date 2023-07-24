@@ -222,6 +222,43 @@ class HBNBCommand(cmd.Cmd):
         elif line.endswith(".count()"):
             class_name = line[:-8]
             self.do_count(class_name)
+        elif ".show" in line:
+            for class_name in self.classes:
+                if line.startswith(
+                        f"{class_name}.show(") and line.endswith(")"):
+                    start_index = line.find("(")
+                    end_index = line.find(")")
+                    instance_id = line[start_index + 2: end_index - 1]
+                    line = "{} {}".format(class_name, instance_id)
+                    self.do_show(line)
+                    return
+        elif ".destroy" in line:
+            for class_name in self.classes:
+                if line.startswith(
+                        f"{class_name}.destroy(") and line.endswith(")"):
+                    start_index = line.find("(")
+                    end_index = line.find(")")
+                    instance_id = line[start_index + 2: end_index - 1]
+                    line = "{} {}".format(class_name, instance_id)
+                    self.do_destroy(line)
+                    return
+        elif ".update" in line:
+            for class_name in self.classes:
+                if line.startswith(
+                        f"{class_name}.update(") and line.endswith(")"):
+                    start_index = line.find("(")
+                    end_index = line.find(")")
+                    params = line[start_index + 1: end_index].split(", ")
+                    if len(params) >= 3:
+                        inst_id = params[0][1:-1]
+                        attr_name = params[1][1:-1]
+                        attr_val = params[2][1:-1]
+                        line = f"{class_name} {inst_id} {attr_name} {attr_val}"
+                        self.do_update(line)
+                        return
+                    else:
+                        print("*** Missing parameters for update ***")
+                        return
         else:
             print("*** Unknown syntax: {}".format(line))
 
