@@ -67,7 +67,7 @@ h4 {
 .locations:hover .popover,
 .amenities:hover .popover {
     display: block;
-    /* color: #fafafa; */
+    background-color: #FAFAFA;
     width: 100%; /* Suspect */
     /* height: 150%; Suspect */
     border: 1px solid #DDDDDD;
